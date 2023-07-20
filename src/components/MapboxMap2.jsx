@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import io from 'socket.io-client';
-// import extractLatitudeAndLongitude from '../utils/utils';
+import extractLatitudeAndLongitude from '../utils/utils';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiYWlyZm9yY2UyaGlnaCIsImEiOiJjbGtiYTZ4d2wwYXFnM2JvMHBvcXQ4dWJhIn0.hWAcsZ9TJm7MzibOfoMXDw';
 
 function MapboxMap2(){
   const [viewState, setViewState] = useState({
     width: '100%',
-    height: '500px',
-    latitude: 51.5074, // Replace with your initial map latitude
-    longitude: -0.1278, // Replace with your initial map longitude
-    zoom: 8, // Adjust the initial zoom level as needed
+    height: '1200px',
+    latitude: 54.500000, // Replace with your initial map latitude
+    longitude: -4.2000, // Replace with your initial map longitude
+    zoom: 4.7, // Adjust the initial zoom level as needed
   });
   const [patrols, setPatrols] = useState({});
-  // const [markers, setMarkers] = useState({});
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     const socket = io('http://localhost:7071');
@@ -28,30 +28,29 @@ function MapboxMap2(){
     };
   }, []);
 
-  // useEffect(() => {
-  //   updateMapMarkers();
-  // }, [patrols]);
+  useEffect(() => {
+    updateMapMarkers();
+  }, [patrols]);
 
   
 
-  // const updateMapMarkers = () => {
-  //   console.log('updateMapMarkers invoked', Date.now())
+  const updateMapMarkers = () => {
+    console.log('updateMapMarkers invoked', Date.now())
     
-  //   // // console.log('patrols!!!', patrols.patrol0.currentLocation)
-  //   // const patrolArr = Object.values(patrols);
-  //   // console.log('patrolArr.length', patrolArr.length)
-  //   // if(patrolArr.length > 0) {
-  //   //   console.log('patrolArr', typeof(patrolArr[0]))
+    // // console.log('patrols!!!', patrols.patrol0.currentLocation)
+    const patrolArr = Object.values(patrols);
+    // console.log('patrolArr.length', patrolArr.length)
+    if(patrolArr.length > 0) {
+      const markerArr = extractLatitudeAndLongitude(patrolArr)
+    
+
+      setMarkers(markerArr);
+  
       
-  //     // console.log("111111", markersArr.length)
+    }
+    // Then you can update the markers state with the new marker data.
 
-  //     setMarkers(patrols);
-
-  //     console.log('markers', markers)
-    
-  //   // Then you can update the markers state with the new marker data.
-
-  // };
+  };
 
   return (
     <ReactMapGL {...viewState} 
@@ -61,16 +60,17 @@ function MapboxMap2(){
     mapboxAccessToken={MAPBOX_TOKEN}>
       {/* Render the markers on the map */}
       {/* Example: */}
-      {/* {patrols.map((marker, index) => (
-        <Marker key={index} latitude={marker.latitude} longitude={marker.longitude}>
-          <div>Marker</div>
-        </Marker>
-      ))} */}
+      {markers.map((marker, index) => {
+        return(
+        <Marker key={index} latitude={marker.latitude} longitude={marker.longitude} color="red"/>
+             
+        )
+      })}
         {/* <Marker key={index} longitude={marker.longitude} latitude={marker.latitude} color="red" /> */}
-        <Marker longitude={-2.936226} latitude={50.933313} color="red" />
+        {/* <Marker longitude={-2.936226} latitude={50.933313} color="red" />
         <Marker key={'any'} latitude={50.933313} longitude={-2.936226}>
         <img alt=''src="./pin_ting.png" />
-        </Marker>
+        </Marker> */}
       
     </ReactMapGL>
   );
