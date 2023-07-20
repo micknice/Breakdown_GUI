@@ -1,25 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
+import WebSocketClientComponent from './components/PatrolDisplay.jsx';
+import MapboxMap from './components/MapboxMap';
+import MapboxMap2 from './components/MapboxMap2';
 
-function App() {
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <MapboxMap2 />
+      {/* <WebSocketClientComponent /> */}
     </div>
   );
-}
+};
 
 export default App;
