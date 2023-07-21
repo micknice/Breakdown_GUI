@@ -5,8 +5,6 @@ function extractLatitudeAndLongitude(arrayOfObjects, markers) {
       const [latitude, longitude] = obj.currentLocation;
       return { latitude, longitude };
     } else {
-      // Handle the case where currentLocation is not in the expected format
-      // You can throw an error, return some default values, or handle it based on your use case.
       return { latitude: markers[index].latitude, longitude: markers[index].longitude };
     }
   });
