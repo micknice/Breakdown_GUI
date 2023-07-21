@@ -23,6 +23,7 @@ function MapboxMap2(){
     const socket = io('http://localhost:7071');
     socket.on('patrolData', (data) => {
       console.log('Received updated patrols data:', data, Date.now());
+      console.log(data)
       setPatrols(data); 
     });
     return () => {
@@ -43,7 +44,7 @@ function MapboxMap2(){
     const patrolArr = Object.values(patrols);
     // console.log('patrolArr.length', patrolArr.length)
     if(patrolArr.length > 0) {
-      const markerArr = extractLatitudeAndLongitude(patrolArr)
+      const markerArr = extractLatitudeAndLongitude(patrolArr, markers)
     
       setPatData(patrolArr);
       setMarkers(markerArr);
