@@ -11,12 +11,12 @@ function MapboxMap2() {
   const [viewState, setViewState] = useState({
     width: '100%',
     height: '1200px',
-    latitude: 54.500000, // Replace with your initial map latitude
-    longitude: -4.2000, // Replace with your initial map longitude
-    zoom: 4.7, // Adjust the initial zoom level as needed
+    latitude: 54.500000, 
+    longitude: -4.2000, 
+    zoom: 4.7, 
   });
   const [patrols, setPatrols] = useState({});
-  const [markers, setMarkers] = useState([]); // Modify initial state to an empty array
+  const [markers, setMarkers] = useState([]); 
   const [patData, setPatData] = useState([]);
 
   useEffect(() => {
@@ -33,11 +33,9 @@ function MapboxMap2() {
 
   useEffect(() => {
     updateMapMarkers();
-  }, [patrols]); // Add patData to the dependency array
+  }, [patrols]); 
 
-  // useEffect(()=> {
-
-  // }, [markers])
+ 
   const updateMapMarkers = () => {
     console.log('updateMapMarkers invoked', Date.now());
 
@@ -88,15 +86,10 @@ function MapboxMap2() {
                 >
                 <circle cx="12" cy="12" r="10" />
               </svg>
-                {/* <h2 style={{
-                  
-                  color: 'black',
-                  stroke: 'none',
-                  transform: `translate(${-20 / 2}px,${-70}px)`,
-                }}>{patrolId}</h2> */}
+                
                   
             </div>
-            {/* {popup} */}
+            
           </Marker>
         );
       })}
