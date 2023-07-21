@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import io from 'socket.io-client';
 import extractLatitudeAndLongitude from '../utils/utils';
+import mapboxgl from 'mapbox-gl';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiYWlyZm9yY2UyaGlnaCIsImEiOiJjbGtiYTZ4d2wwYXFnM2JvMHBvcXQ4dWJhIn0.hWAcsZ9TJm7MzibOfoMXDw';
 
@@ -16,6 +17,7 @@ function MapboxMap2(){
   });
   const [patrols, setPatrols] = useState({});
   const [markers, setMarkers] = useState([]);
+  const [patData, setPatData] = useState([]);
 
   useEffect(() => {
     const socket = io('http://localhost:7071');
@@ -43,7 +45,7 @@ function MapboxMap2(){
     if(patrolArr.length > 0) {
       const markerArr = extractLatitudeAndLongitude(patrolArr)
     
-
+      setPatData(patrolArr);
       setMarkers(markerArr);
   
       
@@ -61,10 +63,20 @@ function MapboxMap2(){
       {/* Render the markers on the map */}
       {/* Example: */}
       {markers.map((marker, index) => {
-        return(
-        <Marker key={index} latitude={marker.latitude} longitude={marker.longitude} color="red"/>
+        // if(patData[index].onJob) {
+          
+          const popup = new mapboxgl.Popup().setHTML(`<h1>${patData[index].patrolId}</h1>`)
+          return(         
+            <Marker key={index} latitude={marker.latitude} longitude={marker.longitude} color="red" popup={popup}/>)
+        // } else {
+        //   return (
+        //     <Marker key={index} latitude={marker.latitude} longitude={marker.longitude} color="green"/>)
+          
+        // }
+        
+          
              
-        )
+        
       })}
         {/* <Marker key={index} longitude={marker.longitude} latitude={marker.latitude} color="red" /> */}
         {/* <Marker longitude={-2.936226} latitude={50.933313} color="red" />
