@@ -33,8 +33,11 @@ function MapboxMap2() {
 
   useEffect(() => {
     updateMapMarkers();
-  }, [patrols, patData]); // Add patData to the dependency array
+  }, [patrols]); // Add patData to the dependency array
 
+  // useEffect(()=> {
+
+  // }, [markers])
   const updateMapMarkers = () => {
     console.log('updateMapMarkers invoked', Date.now());
 
@@ -45,7 +48,7 @@ function MapboxMap2() {
         const onJob = patrolArr[index].onJob;
 
 
-        const color = onJob ? 'red' : 'green';
+        const color = onJob ? 'green' : 'red';
 
  
         return { ...marker, color };
@@ -68,9 +71,33 @@ function MapboxMap2() {
       {/* Render the markers on the map */}
       {markers.map((marker, index) => {
         const { color, latitude, longitude } = marker;
-        const popup = new mapboxgl.Popup().setHTML(`<h1>${patData[index].patrolId}</h1>`);
+        console.log(color)
+        const patrolId = patData[index].patrolId
         return (
-          <Marker key={index} latitude={latitude} longitude={longitude} color={color} popup={popup} />
+          <Marker key={index} latitude={latitude} longitude={longitude}>
+            <div style={{ color }}>
+              <svg
+                height="20"
+                viewBox="0 0 24 24"
+                style={{
+                  cursor: 'pointer',
+                  fill: color,
+                  stroke: 'none',
+                  transform: `translate(${0 / 2}px,${0}px)`,
+                }}
+                >
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+                {/* <h2 style={{
+                  
+                  color: 'black',
+                  stroke: 'none',
+                  transform: `translate(${-20 / 2}px,${-70}px)`,
+                }}>{patrolId}</h2> */}
+                  
+            </div>
+            {/* {popup} */}
+          </Marker>
         );
       })}
     </ReactMapGL>
