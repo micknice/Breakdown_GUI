@@ -18,6 +18,7 @@ function MapboxMap2() {
   const [patrols, setPatrols] = useState({});
   const [markers, setMarkers] = useState([]); 
   const [patData, setPatData] = useState([]);
+  const [selectorValue, setSelectorValue] = useState('option1')
   
   useEffect(() => {
     const socket = io('http://localhost:7071');
@@ -38,7 +39,7 @@ function MapboxMap2() {
   const handleStartSimulation = () => {
     console.log('handler invoked')
     const socket = io('http://localhost:7071');
-    socket.emit('sim', '!!!!!')
+    socket.emit('sim', `${selectorValue}`)
     
   }
   const updateMapMarkers = () => {
@@ -67,23 +68,52 @@ function MapboxMap2() {
     <div style={{ width: '100%', height: '100vh', display: 'flex' }}>
       
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1, padding: '20px' }}>
-        {/* Add your text content here */}
         <h1>AA SIMULATOR</h1>
         <p>Break it on down!!!</p>
+         {/* Three-way selector */}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label>
+            <input
+              type="radio"
+              value={28}
+              checked={selectorValue === 28}
+              onChange={() => setSelectorValue(28)}
+            />
+            Happy Handler
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={17}
+              checked={selectorValue === 17}
+              onChange={() => setSelectorValue(17)}
+            />
+            Another Day at the Office
+          </label>
+          <label>
+            <input
+              type="radio"
+              value={10}
+              checked={selectorValue === 10}
+              onChange={() => setSelectorValue(10)}
+            />
+            Apology Simulator
+          </label>
+        </div>
         <button onClick={handleStartSimulation}>Start Simulation</button>
       </div>
       <div style={{ position: 'absolute', top: 0, bottom: '0', left: '0', transform: 'translateX(-50%)', zIndex: 1 }}>
-        {/* Add your button here */}
+        
       </div>
 
       <ReactMapGL
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
-        // style={{ width: 2380, height: 1200 }}
+       
         mapStyle="mapbox://styles/mapbox/streets-v9"
         mapboxAccessToken={MAPBOX_TOKEN}
         >
-        {/* Render the markers on the map */}
+       
         {markers.map((marker, index) => {
           const { color, latitude, longitude } = marker;
           console.log(color)
