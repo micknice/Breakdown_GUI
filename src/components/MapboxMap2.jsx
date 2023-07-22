@@ -18,15 +18,20 @@ function MapboxMap2() {
   const [patrols, setPatrols] = useState({});
   const [markers, setMarkers] = useState([]); 
   const [patData, setPatData] = useState([]);
-  const [selectorValue, setSelectorValue] = useState('option1')
+  const [selectorValue, setSelectorValue] = useState('option1');
+  const [iterationSummary, setIterationSummary] = useState({})
   
   useEffect(() => {
     const socket = io('http://localhost:7071');
     socket.on('patrolData', (data) => {
       console.log('Received updated patrols data:', data, Date.now());
       console.log(data);
+      console.log(data.liveJobs);
       setPatrols(data);
     });
+    socket.on('iterationSummary', (summary) => {
+      setIterationSummary(summary)
+    })
     return () => {
       socket.disconnect();
     };
@@ -70,6 +75,7 @@ function MapboxMap2() {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1, padding: '20px' }}>
         <h1>AA SIMULATOR</h1>
         <p>Break it on down!!!</p>
+      <h1>{patrols.liveJobs}</h1>
          {/* Three-way selector */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label>
@@ -101,6 +107,13 @@ function MapboxMap2() {
           </label>
         </div>
         <button onClick={handleStartSimulation}>Start Simulation</button>
+        <h1>Time:{iterationSummary.simTime}</h1>
+        <h1>Iteration:{iterationSummary.iteration}</h1>
+        <h1>Breakdowns logged:{iterationSummary.totalJobs}</h1>
+        <h1>Live breakdowns:{iterationSummary.liveJobs}</h1>
+        <h1>Completed breakdowns:{iterationSummary.completedJobs}</h1>
+        <h1>Assigned Patrols:{iterationSummary.assignedPatrols}</h1>
+        <h1>Unassigned Patrols:{iterationSummary.unassignedPatrols}</h1>
       </div>
       <div style={{ position: 'absolute', top: 0, bottom: '0', left: '0', transform: 'translateX(-50%)', zIndex: 1 }}>
         
